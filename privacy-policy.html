@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Privacy Policy — BidScreen</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #0f172a;
+      color: #94a3b8;
+      padding: 40px 20px 80px;
+      line-height: 1.75;
+      font-size: 15px;
+    }
+    .wrap { max-width: 680px; margin: 0 auto; }
+
+    .brand-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 40px; }
+    .brand-bar svg { flex-shrink: 0; border-radius: 6px; }
+    .brand-bar span { font-size: 18px; font-weight: 700; color: #f1f5f9; }
+
+    h1 { font-size: 28px; font-weight: 700; color: #f1f5f9; margin-bottom: 6px; }
+    .subtitle { font-size: 13px; color: #475569; margin-bottom: 32px; }
+
+    h2 {
+      font-size: 16px; font-weight: 600; color: #e2e8f0;
+      margin: 36px 0 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #1e293b;
+    }
+    p  { margin-bottom: 14px; }
+    ul { padding-left: 20px; margin-bottom: 14px; }
+    ul li { margin-bottom: 6px; }
+
+    .callout {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-left: 4px solid #22c55e;
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 24px 0;
+      color: #cbd5e1;
+    }
+    .callout strong { color: #4ade80; }
+
+    a { color: #22c55e; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .updated {
+      font-size: 12px; color: #334155;
+      margin-top: 56px;
+      padding-top: 20px;
+      border-top: 1px solid #1e293b;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <div class="brand-bar">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="32" height="32">
+        <rect width="500" height="500" rx="100" fill="#0f172a"/>
+        <path d="M250 80 C250 80 140 120 140 200 L140 280 C140 360 250 420 250 420 C250 420 360 360 360 280 L360 200 C360 120 250 80 250 80Z" fill="none" stroke="#3b82f6" stroke-width="18" stroke-linejoin="round"/>
+        <path d="M185 255 L225 300 L315 200" fill="none" stroke="#22c55e" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>BidScreen</span>
+    </div>
+
+    <h1>Privacy Policy</h1>
+    <p class="subtitle">bidscreen.co.uk &mdash; Last updated May 2026</p>
+
+    <div class="callout">
+      <strong>Short version:</strong> BidScreen stores your API key and business profile locally on your device only. The only external call it makes is to the Google Gemini API to analyse tender text. Nothing else leaves your browser.
+    </div>
+
+    <h2>What data BidScreen collects</h2>
+    <p>BidScreen collects two types of data when you use the extension:</p>
+    <ul>
+      <li><strong>Gemini API key</strong> — the API key you provide to connect to Google&rsquo;s Gemini AI service</li>
+      <li><strong>Business profile</strong> — your business name, core services, insurance levels, turnover range, certifications, and geographic reach, entered voluntarily in the settings page</li>
+    </ul>
+    <p>BidScreen also temporarily reads the text content of the active browser tab (the tender page) in order to analyse it. This content is not stored after the analysis completes.</p>
+
+    <h2>Where your data is stored</h2>
+    <p>Your API key and business profile are stored exclusively in <code>chrome.storage.local</code> — Chrome&rsquo;s secure, device-local storage. This data:</p>
+    <ul>
+      <li>Never leaves your device</li>
+      <li>Is never transmitted to BidScreen&rsquo;s servers</li>
+      <li>Is never shared with any third party other than Google (for the Gemini API call — see below)</li>
+      <li>Can be deleted at any time by removing the extension or clearing extension storage in Chrome settings</li>
+    </ul>
+
+    <h2>What is sent to third parties</h2>
+    <p>When you run a screen, BidScreen sends the following directly from your browser to the <strong>Google Gemini API</strong>:</p>
+    <ul>
+      <li>The text content of the tender page you are viewing (truncated to 15,000 characters)</li>
+      <li>Your business profile (to enable personalised matching)</li>
+      <li>Your Gemini API key (as the authentication credential for the API call)</li>
+    </ul>
+    <p>This call goes directly from your browser to Google&rsquo;s API — it does not pass through BidScreen&rsquo;s infrastructure. Your use of the Gemini API is subject to <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google&rsquo;s Privacy Policy</a>.</p>
+
+    <h2>Data we do not collect</h2>
+    <p>BidScreen does not:</p>
+    <ul>
+      <li>Collect analytics or usage telemetry</li>
+      <li>Use cookies</li>
+      <li>Track which tenders you screen or how often you use the extension</li>
+      <li>Sell, rent, or share your data with any third party beyond the Gemini API call described above</li>
+      <li>Store any data on external servers</li>
+    </ul>
+
+    <h2>Your rights</h2>
+    <p>Because all data is stored locally on your device, you have complete control over it at all times. To delete all BidScreen data, remove the extension from Chrome or use Chrome&rsquo;s extension storage management tools.</p>
+
+    <h2>Contact</h2>
+    <p>Questions about this privacy policy? Contact us at <a href="mailto:hello@bidscreen.co.uk">hello@bidscreen.co.uk</a>.</p>
+
+    <p class="updated">BidScreen &mdash; bidscreen.co.uk &mdash; Privacy Policy &mdash; May 2026</p>
+
+  </div>
+</body>
+</html>

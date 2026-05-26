@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Setup Guide — BidScreen</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #0f172a;
+      color: #94a3b8;
+      padding: 0 20px 80px;
+      line-height: 1.7;
+      font-size: 15px;
+    }
+    .wrap { max-width: 700px; margin: 0 auto; }
+
+    /* ── Header ── */
+    .page-header { padding: 48px 0 40px; border-bottom: 1px solid #1e293b; margin-bottom: 48px; }
+    .brand-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+    .brand-bar svg { border-radius: 6px; flex-shrink: 0; }
+    .brand-bar span { font-size: 18px; font-weight: 700; color: #f1f5f9; }
+    h1 { font-size: 32px; font-weight: 700; color: #f1f5f9; margin-bottom: 10px; line-height: 1.2; }
+    .intro { font-size: 16px; color: #64748b; max-width: 520px; }
+
+    /* ── Steps ── */
+    .steps { display: flex; flex-direction: column; gap: 0; }
+
+    .step {
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 0 24px;
+      padding-bottom: 40px;
+    }
+    .step:last-child { padding-bottom: 0; }
+
+    .step-left { display: flex; flex-direction: column; align-items: center; }
+    .step-num {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: #1e293b; border: 2px solid #334155;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; font-weight: 700; color: #64748b;
+      flex-shrink: 0;
+    }
+    .step.done .step-num { background: rgba(34,197,94,0.1); border-color: #22c55e; color: #4ade80; }
+    .step-line {
+      width: 2px; flex: 1;
+      background: #1e293b;
+      margin-top: 10px;
+    }
+    .step:last-child .step-line { display: none; }
+
+    .step-body { padding-top: 8px; }
+    .step-title { font-size: 18px; font-weight: 600; color: #e2e8f0; margin-bottom: 10px; }
+    .step-body p { margin-bottom: 12px; }
+    .step-body ul { padding-left: 18px; margin-bottom: 12px; }
+    .step-body ul li { margin-bottom: 6px; }
+
+    a { color: #22c55e; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin: 14px 0;
+    }
+    .card-title { font-size: 12px; font-weight: 600; color: #475569; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+    .card p { margin: 0; color: #cbd5e1; font-size: 14px; }
+
+    .screenshot-placeholder {
+      background: #1e293b;
+      border: 2px dashed #334155;
+      border-radius: 10px;
+      padding: 28px 20px;
+      text-align: center;
+      margin: 16px 0;
+      color: #475569;
+      font-size: 13px;
+    }
+    .screenshot-placeholder span { display: block; font-size: 11px; margin-top: 4px; color: #334155; }
+
+    .tip {
+      background: rgba(59,130,246,0.07);
+      border: 1px solid rgba(59,130,246,0.2);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin: 14px 0;
+      font-size: 13px;
+      color: #93c5fd;
+    }
+    .tip strong { color: #60a5fa; }
+
+    .warning {
+      background: rgba(251,191,36,0.07);
+      border: 1px solid rgba(251,191,36,0.2);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin: 14px 0;
+      font-size: 13px;
+      color: #fde68a;
+    }
+
+    code {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-size: 13px;
+      color: #a5f3fc;
+      font-family: 'Courier New', monospace;
+    }
+
+    /* ── Footer ── */
+    .page-footer {
+      margin-top: 60px;
+      padding-top: 24px;
+      border-top: 1px solid #1e293b;
+      font-size: 12px;
+      color: #334155;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .page-footer a { color: #475569; }
+
+    @media (max-width: 520px) {
+      .step { grid-template-columns: 44px 1fr; gap: 0 16px; }
+      h1 { font-size: 26px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <div class="page-header">
+      <div class="brand-bar">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="30" height="30">
+          <rect width="500" height="500" rx="100" fill="#0f172a"/>
+          <path d="M250 80 C250 80 140 120 140 200 L140 280 C140 360 250 420 250 420 C250 420 360 360 360 280 L360 200 C360 120 250 80 250 80Z" fill="none" stroke="#3b82f6" stroke-width="18" stroke-linejoin="round"/>
+          <path d="M185 255 L225 300 L315 200" fill="none" stroke="#22c55e" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>BidScreen</span>
+      </div>
+      <h1>Getting started with BidScreen</h1>
+      <p class="intro">From install to your first tender screen in under 5 minutes. No account required.</p>
+    </div>
+
+    <div class="steps">
+
+      <!-- Step 1 -->
+      <div class="step">
+        <div class="step-left">
+          <div class="step-num">1</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-title">Install BidScreen from the Chrome Web Store</div>
+          <p>Click <strong>Add to Chrome</strong> on the BidScreen listing page, then confirm by clicking <strong>Add extension</strong> in the dialog.</p>
+          <p>After installation, the BidScreen shield icon will appear in your browser toolbar. If you don&rsquo;t see it, click the puzzle-piece icon in Chrome&rsquo;s toolbar and pin BidScreen.</p>
+
+          <div class="screenshot-placeholder">
+            [Screenshot: Chrome Web Store listing — Add to Chrome button]
+            <span>Recommended capture: 1280×800, full browser window</span>
+          </div>
+
+          <div class="tip">
+            <strong>Tip:</strong> BidScreen works on any page with tender text — it doesn&rsquo;t require a specific portal. Find a Tender, Contracts Finder, ProContract, Delta eSourcing, and most council portals all work.
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="step">
+        <div class="step-left">
+          <div class="step-num">2</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-title">Get a free Gemini API key from Google AI Studio</div>
+          <p>BidScreen uses Google&rsquo;s Gemini AI to analyse tender text. In the free tier, you supply your own API key — it&rsquo;s free, takes under 2 minutes to create, and the free quota is more than enough for regular tender screening.</p>
+
+          <div class="card">
+            <div class="card-title">How to get your API key</div>
+            <p>
+              1. Go to <a href="https://aistudio.google.com" target="_blank" rel="noopener">aistudio.google.com</a><br>
+              2. Sign in with your Google account<br>
+              3. Click <strong>Get API Key</strong> in the top left<br>
+              4. Click <strong>Create API Key</strong><br>
+              5. Copy the key — it starts with <code>AIza…</code>
+            </p>
+          </div>
+
+          <div class="screenshot-placeholder">
+            [Screenshot: Google AI Studio — Get API Key screen]
+            <span>Show the "Create API key" button prominently</span>
+          </div>
+
+          <div class="warning">
+            Keep your API key private — treat it like a password. Don&rsquo;t share it or commit it to a public repository. BidScreen stores it locally in your browser only.
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="step">
+        <div class="step-left">
+          <div class="step-num">3</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-title">Add your API key in BidScreen settings</div>
+          <p>Click the BidScreen icon in your toolbar, then click <strong>Click here</strong> in the hint line below the Screen button to open settings. Paste your API key into the Gemini API Key field and click <strong>Save Profile</strong>.</p>
+
+          <div class="screenshot-placeholder">
+            [Screenshot: BidScreen settings page — API Key field with key pasted in]
+            <span>Show the save button and the green "Profile saved ✓" confirmation</span>
+          </div>
+
+          <div class="tip">
+            <strong>Tip:</strong> Your API key is stored in Chrome&rsquo;s local extension storage — it never leaves your browser and is never sent to BidScreen&rsquo;s servers.
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="step">
+        <div class="step-left">
+          <div class="step-num">4</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-title">Set up your business profile <span style="font-size:13px; font-weight:400; color:#475569;">(optional but recommended)</span></div>
+          <p>A business profile lets BidScreen personalise the analysis to your actual eligibility position — comparing tender requirements against your real insurance levels, turnover, certifications, and geographic reach rather than giving a generic assessment.</p>
+          <p>In the settings page, complete the five profile sections:</p>
+
+          <ul>
+            <li><strong>Section 1 — What You Do:</strong> Business name, core services, sector keywords, typical contract value ranges</li>
+            <li><strong>Section 2 — Eligibility Thresholds:</strong> Public liability and professional indemnity insurance levels, annual turnover</li>
+            <li><strong>Section 3 — Certifications:</strong> ISO 9001, ISO 27001, Cyber Essentials, etc.</li>
+            <li><strong>Section 4 — Geographic Reach:</strong> Local, regional, national, or international</li>
+            <li><strong>Section 5 — Bid Writing Context:</strong> Whether you write your own bids or work as a consultancy</li>
+          </ul>
+
+          <div class="screenshot-placeholder">
+            [Screenshot: BidScreen settings — sections 1 and 2 completed, progress bar at 75%]
+            <span>Show green "Complete ✓" badges on filled sections</span>
+          </div>
+
+          <div class="tip">
+            <strong>No profile?</strong> BidScreen still works — it screens for universal procurement red flags and eligibility requirements without a profile. You can add your profile at any time.
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="step">
+        <div class="step-left">
+          <div class="step-num">5</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-title">Run your first screen</div>
+          <p>Navigate to any tender detail page — the page with the full contract description, not just a search result. Click the BidScreen icon in your toolbar and click <strong>Screen</strong>.</p>
+          <p>Analysis takes around 20–40 seconds. You&rsquo;ll see:</p>
+
+          <ul>
+            <li>A <strong>STRONG FIT / PARTIAL FIT / POOR FIT</strong> verdict with a compatibility score</li>
+            <li><strong>Quick Take</strong> — 3–4 emoji bullets summarising the key signals</li>
+            <li><strong>Hard Requirements Check</strong> — a table comparing what the tender asks against your profile, with colour-coded status</li>
+            <li><strong>Opportunity Indicators</strong> and <strong>Risk Flags</strong> — specific to your profile, not generic</li>
+            <li><strong>Recommended Next Step</strong> — one specific, actionable instruction</li>
+          </ul>
+
+          <div class="screenshot-placeholder">
+            [Screenshot: BidScreen popup showing a PARTIAL FIT result with exec summary card]
+            <span>Show the Quick Take bullets and the "▼ Full analysis" toggle</span>
+          </div>
+
+          <p>Use the <strong>Copy</strong> button to copy the full analysis as markdown, or <strong>PDF</strong> to export a clean report. Your result is saved for this URL — reopen the popup at any time to see it instantly without re-running.</p>
+
+          <div class="card">
+            <div class="card-title">If the screen button doesn&rsquo;t work</div>
+            <p>BidScreen needs to read the text on the current page. Make sure you&rsquo;re on the tender <em>detail</em> page (not a search results page), and that the page has fully loaded. Some authenticated portals (JAGGAER, Due North) may block content extraction — if this happens, the error message will tell you.</p>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /steps -->
+
+    <div class="page-footer">
+      <span>BidScreen &mdash; <a href="https://bidscreen.co.uk" target="_blank">bidscreen.co.uk</a></span>
+      <a href="https://bidscreen.co.uk/privacy" target="_blank">Privacy Policy</a>
+      <a href="mailto:hello@bidscreen.co.uk">hello@bidscreen.co.uk</a>
+      <a href="https://ko-fi.com/bidscreen" target="_blank">&#9749; Support on Ko-fi</a>
+    </div>
+
+  </div>
+</body>
+</html>
