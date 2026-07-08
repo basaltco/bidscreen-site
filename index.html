@@ -1,35 +1,423 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BidScreen - AI Tender Qualifier for UK Procurement</title>
-<meta name="description" content="Screen UK public sector tenders in 30 seconds. AI-powered fit assessment against your business profile.">
-<style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: system-ui, sans-serif; background: #0f172a; color: #f8fafc; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 40px 20px; }
-.container { max-width: 600px; text-align: center; }
-.logo { font-size: 32px; font-weight: 800; margin-bottom: 24px; }
-.logo span { color: #3b82f6; }
-h1 { font-size: 48px; font-weight: 800; line-height: 1.1; margin-bottom: 20px; }
-h1 em { color: #22c55e; font-style: normal; }
-p { font-size: 18px; color: #94a3b8; line-height: 1.7; margin-bottom: 36px; }
-.btn { display: inline-block; background: #22c55e; color: #022c22; font-size: 16px; font-weight: 700; padding: 14px 32px; border-radius: 10px; text-decoration: none; }
-.links { display: flex; gap: 24px; justify-content: center; margin-top: 48px; }
-.links a { color: #64748b; font-size: 14px; text-decoration: none; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BidScreen — AI Tender Screening in Your Browser | Free Chrome Extension</title>
+  <meta name="description" content="BidScreen screens public sector tenders against your business profile in about 30 seconds. STRONG FIT / PARTIAL FIT / POOR FIT verdict on any procurement portal. Free Chrome extension for bid writers — UK, US, Canada, Australia.">
+  <link rel="canonical" href="https://bidscreen.co.uk/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "BidScreen",
+    "operatingSystem": "Chrome",
+    "applicationCategory": "BusinessApplication",
+    "description": "AI-powered tender qualification tool for bid writers. Screens public sector tenders against your business profile and returns a structured fit analysis in about 30 seconds.",
+    "url": "https://bidscreen.co.uk/",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "GBP",
+      "description": "Free tier — bring your own Gemini API key, unlimited screenings"
+    }
+  }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0f172a;
+      --bg-raise: #1e293b;
+      --border: #334155;
+      --text: #94a3b8;
+      --text-bright: #f1f5f9;
+      --text-mid: #cbd5e1;
+      --text-dim: #475569;
+      --blue: #3b82f6;
+      --green: #22c55e;
+      --green-bright: #4ade80;
+      --amber: #f59e0b;
+      --red: #ef4444;
+      --max: 960px;
+    }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.75;
+      font-size: 16px;
+    }
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 0 20px; }
+    a { color: var(--green); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ---------- header ---------- */
+    header {
+      border-bottom: 1px solid var(--bg-raise);
+      padding: 18px 0;
+    }
+    .header-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .brand svg { flex-shrink: 0; border-radius: 6px; }
+    .brand span { font-size: 18px; font-weight: 700; color: var(--text-bright); }
+    .header-links { display: flex; align-items: center; gap: 22px; font-size: 14px; }
+    .header-links a { color: var(--text-mid); }
+    .btn {
+      display: inline-block;
+      background: var(--green);
+      color: #052e16;
+      font-weight: 700;
+      font-size: 15px;
+      padding: 10px 22px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+    }
+    .btn:hover { background: var(--green-bright); text-decoration: none; }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-mid);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { background: var(--bg-raise); color: var(--text-bright); }
+
+    /* ---------- hero ---------- */
+    .hero { padding: 72px 0 56px; text-align: center; }
+    .hero h1 {
+      font-size: 42px;
+      font-weight: 800;
+      color: var(--text-bright);
+      line-height: 1.2;
+      max-width: 720px;
+      margin: 0 auto 18px;
+    }
+    .hero h1 em { font-style: normal; color: var(--green-bright); }
+    .hero .sub {
+      font-size: 18px;
+      color: var(--text);
+      max-width: 620px;
+      margin: 0 auto 32px;
+    }
+    .hero-ctas { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; margin-bottom: 18px; }
+    .hero-note { font-size: 13px; color: var(--text-dim); }
+
+    .verdict-chips { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin: 34px 0 0; }
+    .chip {
+      font-size: 13px; font-weight: 700; letter-spacing: 0.04em;
+      padding: 7px 16px; border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--bg-raise);
+    }
+    .chip.strong  { color: var(--green-bright); border-color: rgba(34,197,94,0.4); }
+    .chip.partial { color: var(--amber);        border-color: rgba(245,158,11,0.4); }
+    .chip.poor    { color: var(--red);          border-color: rgba(239,68,68,0.4); }
+
+    /* ---------- sections ---------- */
+    section { padding: 56px 0; border-top: 1px solid var(--bg-raise); }
+    .kicker {
+      font-size: 13px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--blue); margin-bottom: 10px;
+    }
+    h2 { font-size: 28px; font-weight: 700; color: var(--text-bright); margin-bottom: 14px; }
+    .section-sub { max-width: 640px; margin-bottom: 36px; }
+
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .card {
+      background: var(--bg-raise);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+    }
+    .card .step-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px; border-radius: 8px;
+      background: rgba(59,130,246,0.15); color: var(--blue);
+      font-weight: 700; font-size: 15px; margin-bottom: 14px;
+    }
+    .card h3 { font-size: 17px; font-weight: 600; color: var(--text-bright); margin-bottom: 8px; }
+    .card p { font-size: 14.5px; }
+
+    /* ---------- regions ---------- */
+    .region-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .region {
+      display: flex; gap: 14px; align-items: flex-start;
+      background: var(--bg-raise); border: 1px solid var(--border);
+      border-radius: 10px; padding: 16px 18px;
+    }
+    .region .flag { font-size: 24px; line-height: 1.3; }
+    .region strong { color: var(--text-bright); display: block; font-size: 15px; }
+    .region span { font-size: 13.5px; color: var(--text); }
+
+    /* ---------- tiers ---------- */
+    .tiers { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: stretch; }
+    .tier {
+      background: var(--bg-raise); border: 1px solid var(--border);
+      border-radius: 14px; padding: 30px; display: flex; flex-direction: column;
+    }
+    .tier.pro { border-color: rgba(34,197,94,0.45); position: relative; }
+    .tier .tier-name { font-size: 14px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-dim); }
+    .tier.pro .tier-name { color: var(--green-bright); }
+    .tier .price { font-size: 34px; font-weight: 800; color: var(--text-bright); margin: 6px 0 2px; }
+    .tier .price small { font-size: 15px; font-weight: 500; color: var(--text); }
+    .tier .tier-tag { font-size: 13.5px; color: var(--text); margin-bottom: 20px; }
+    .tier ul { list-style: none; margin-bottom: 26px; flex-grow: 1; }
+    .tier ul li { padding-left: 26px; position: relative; margin-bottom: 10px; font-size: 14.5px; color: var(--text-mid); }
+    .tier ul li::before { content: "✓"; position: absolute; left: 0; color: var(--green); font-weight: 700; }
+    .soon-badge {
+      position: absolute; top: -12px; right: 22px;
+      background: var(--green); color: #052e16;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.04em;
+      padding: 3px 12px; border-radius: 999px;
+    }
+
+    /* ---------- waitlist ---------- */
+    .waitlist-box {
+      background: var(--bg-raise);
+      border: 1px solid rgba(34,197,94,0.45);
+      border-radius: 14px;
+      padding: 36px;
+      max-width: 620px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .waitlist-box h2 { margin-bottom: 10px; }
+    .waitlist-box p { margin-bottom: 24px; font-size: 15px; }
+    .waitlist-form { display: flex; gap: 10px; justify-content: center; }
+    .waitlist-form input[type="email"] {
+      flex: 1; max-width: 320px;
+      background: var(--bg); color: var(--text-bright);
+      border: 1px solid var(--border); border-radius: 8px;
+      padding: 11px 14px; font-size: 15px; font-family: inherit;
+    }
+    .waitlist-form input[type="email"]:focus { outline: 2px solid var(--blue); border-color: transparent; }
+    .waitlist-small { font-size: 12.5px; color: var(--text-dim); margin-top: 14px; }
+
+    /* ---------- honesty block ---------- */
+    .honest {
+      border-left: 4px solid var(--amber);
+      background: var(--bg-raise);
+      border-radius: 8px;
+      padding: 18px 22px;
+      font-size: 14.5px;
+      color: var(--text-mid);
+      max-width: 720px;
+    }
+    .honest strong { color: var(--text-bright); }
+
+    /* ---------- privacy strip ---------- */
+    .privacy-points { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+
+    /* ---------- footer ---------- */
+    footer {
+      border-top: 1px solid var(--bg-raise);
+      padding: 36px 0 48px;
+      font-size: 13.5px;
+      color: var(--text-dim);
+    }
+    .footer-row { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .footer-links a { color: var(--text); }
+
+    /* ---------- mobile ---------- */
+    @media (max-width: 680px) {
+      .hero { padding: 48px 0 40px; }
+      .hero h1 { font-size: 30px; }
+      .hero .sub { font-size: 16px; }
+      .grid-3, .tiers, .region-list, .privacy-points { grid-template-columns: 1fr; }
+      .header-links { display: none; }
+      .waitlist-form { flex-direction: column; align-items: stretch; }
+      .waitlist-form input[type="email"] { max-width: none; }
+      .waitlist-box { padding: 26px 20px; }
+      h2 { font-size: 24px; }
+      section { padding: 44px 0; }
+    }
+  </style>
 </head>
 <body>
-<div class="container">
-<div class="logo">Bid<span>Screen</span></div>
-<h1>Screen UK tenders in <em>30 seconds</em></h1>
-<p>AI-powered fit assessment against your business profile. Know instantly if a tender is worth your time.</p>
-<a class="btn" href="/setup-guide.html">Get Started</a>
-<div class="links">
-<a href="/setup-guide.html">Setup Guide</a>
-<a href="/privacy-policy.html">Privacy Policy</a>
-<a href="mailto:hello@bidscreen.co.uk">Contact</a>
-</div>
-</div>
+
+  <header>
+    <div class="wrap header-row">
+      <div class="brand">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="32" height="32">
+          <rect width="500" height="500" rx="100" fill="#0f172a"/>
+          <path d="M250 80 C250 80 140 120 140 200 L140 280 C140 360 250 420 250 420 C250 420 360 360 360 280 L360 200 C360 120 250 80 250 80Z" fill="none" stroke="#3b82f6" stroke-width="18" stroke-linejoin="round"/>
+          <path d="M185 255 L225 300 L315 200" fill="none" stroke="#22c55e" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>BidScreen</span>
+      </div>
+      <nav class="header-links">
+        <a href="#how">How it works</a>
+        <a href="#pricing">Pricing</a>
+        <a href="setup-guide.html">Setup guide</a>
+        <a class="btn" href="https://chromewebstore.google.com/detail/bidscreen/dobkignaeniakjdenpodjinbmjclcapj">Add to Chrome — Free</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="hero">
+    <div class="wrap">
+      <h1>Screen tenders in <em>30 seconds</em>, not 30 minutes</h1>
+      <p class="sub">BidScreen reads the tender notice you're viewing, checks it against your business profile, and returns a structured AI screening — fit level, hard requirements, risks, and one recommended next step. On any procurement portal.</p>
+      <div class="hero-ctas">
+        <a class="btn" href="https://chromewebstore.google.com/detail/bidscreen/dobkignaeniakjdenpodjinbmjclcapj">Add to Chrome — Free</a>
+        <a class="btn btn-ghost" href="#waitlist">Join the Pro waitlist</a>
+      </div>
+      <p class="hero-note">Free tier uses your own Gemini API key (free at Google AI Studio) · No account · No data leaves your browser except the AI call</p>
+      <div class="verdict-chips">
+        <span class="chip strong">STRONG FIT</span>
+        <span class="chip partial">PARTIAL FIT</span>
+        <span class="chip poor">POOR FIT</span>
+      </div>
+    </div>
+  </div>
+
+  <section id="problem">
+    <div class="wrap">
+      <p class="kicker">The problem</p>
+      <h2>Qualification eats the week before writing even starts</h2>
+      <p class="section-sub">Bid writers and small consultancies screen 15–30 tender alerts a week. Most of that manual reading confirms what you suspected — wrong sector, wrong value, wrong geography, already awarded. BidScreen does the initial qualification read for you, against a business profile you configure once.</p>
+      <div class="honest">
+        <strong>What BidScreen is not:</strong> it's a tender qualification tool, not a bid writing tool. It helps you make the bid/no-bid decision — it does not write your response, and the screening is an AI-generated aid to your judgement, not a substitute for it. If you bid once or twice a year, the free tier's API key setup probably isn't worth the friction until Pro launches.
+      </div>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="wrap">
+      <p class="kicker">How it works</p>
+      <h2>Three steps, no uploads</h2>
+      <div class="grid-3">
+        <div class="card">
+          <span class="step-num">1</span>
+          <h3>Open a tender notice</h3>
+          <p>Any portal — Find a Tender, Contracts Finder, SAM.gov, CanadaBuys, AusTender, ProContract, or anywhere else a tender detail page loads. Attachment-heavy portal? Paste the text instead.</p>
+        </div>
+        <div class="card">
+          <span class="step-num">2</span>
+          <h3>Click the BidScreen icon</h3>
+          <p>BidScreen reads only the page you're viewing — no browsing history access, no background scanning — and checks it against your certifications, insurance, turnover, and geographic reach.</p>
+        </div>
+        <div class="card">
+          <span class="step-num">3</span>
+          <h3>Get the screening</h3>
+          <p>Fit level with compatibility score, a colour-coded hard requirements table, opportunity indicators, risk flags, and one specific recommended next action. Export to PDF, share with your client.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="regions">
+    <div class="wrap">
+      <p class="kicker">Regions</p>
+      <h2>Procurement context built in</h2>
+      <p class="section-sub">Set your region once. BidScreen applies the relevant procurement rules, portals, and compliance context to every screen.</p>
+      <div class="region-list">
+        <div class="region"><span class="flag">🇬🇧</span><div><strong>United Kingdom</strong><span>Procurement Act 2023 · Find a Tender · Contracts Finder · Public Contracts Scotland</span></div></div>
+        <div class="region"><span class="flag">🇺🇸</span><div><strong>United States</strong><span>FAR · SAM.gov · small business set-asides · NAICS codes</span></div></div>
+        <div class="region"><span class="flag">🇨🇦</span><div><strong>Canada</strong><span>CFTA / CETA · CanadaBuys · Indigenous procurement obligations</span></div></div>
+        <div class="region"><span class="flag">🇦🇺</span><div><strong>Australia</strong><span>Commonwealth Procurement Rules · AusTender · Indigenous Procurement Policy</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing">
+    <div class="wrap">
+      <p class="kicker">Pricing</p>
+      <h2>Free forever with your own key. Pro removes the setup.</h2>
+      <div class="tiers">
+        <div class="tier">
+          <span class="tier-name">Free</span>
+          <div class="price">£0</div>
+          <p class="tier-tag">Bring your own Gemini API key — free at Google AI Studio</p>
+          <ul>
+            <li>Unlimited screenings</li>
+            <li>Business profile matching</li>
+            <li>Fit verdict with compatibility score</li>
+            <li>Hard requirements check table</li>
+            <li>Risk flags and opportunity indicators</li>
+            <li>PDF export of the full report</li>
+            <li>Results cached per tender URL</li>
+          </ul>
+          <a class="btn btn-ghost" href="https://chromewebstore.google.com/detail/bidscreen/dobkignaeniakjdenpodjinbmjclcapj">Add to Chrome</a>
+        </div>
+        <div class="tier pro">
+          <span class="soon-badge">Coming soon</span>
+          <span class="tier-name">Pro</span>
+          <div class="price">£25<small>/month</small></div>
+          <p class="tier-tag">No API key. Nothing to configure. Install and screen.</p>
+          <ul>
+            <li>Everything in Free</li>
+            <li>Managed AI key included — zero setup</li>
+            <li>No Google AI Studio account needed</li>
+            <li>Usage included in the flat fee</li>
+            <li>Priority support</li>
+          </ul>
+          <a class="btn" href="#waitlist">Join the waitlist</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="waitlist">
+    <div class="wrap">
+      <div class="waitlist-box">
+        <p class="kicker">Pro waitlist</p>
+        <h2>Skip the API key setup</h2>
+        <p>Leave your email and we'll let you know the moment Pro is live. Early waitlist members get their first month half price.</p>
+        <form class="waitlist-form" action="https://formsubmit.co/hello@bidscreen.co.uk" method="POST">
+          <input type="hidden" name="_subject" value="BidScreen Pro waitlist signup">
+          <input type="hidden" name="_captcha" value="true">
+          <input type="hidden" name="_next" value="https://bidscreen.co.uk/?joined=1">
+          <input type="email" name="email" placeholder="you@company.co.uk" required>
+          <button class="btn" type="submit">Join the waitlist</button>
+        </form>
+        <p class="waitlist-small">One email when Pro launches, nothing else. No marketing list.</p>
+        <p class="waitlist-small" id="joined-msg" style="display:none; color:#4ade80; font-size:14px; margin-top:18px;">✓ You're on the list — we'll email you when Pro launches.</p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    if (new URLSearchParams(location.search).get('joined') === '1') {
+      document.getElementById('joined-msg').style.display = 'block';
+      document.querySelector('.waitlist-form').style.display = 'none';
+      document.getElementById('waitlist').scrollIntoView();
+    }
+  </script>
+
+  <section id="privacy">
+    <div class="wrap">
+      <p class="kicker">Privacy</p>
+      <h2>Your data stays on your device</h2>
+      <div class="privacy-points">
+        <div class="card">
+          <h3>Stored locally only</h3>
+          <p>Your API key and business profile live in Chrome's secure local storage. They never touch BidScreen's servers — we don't have servers that see your data.</p>
+        </div>
+        <div class="card">
+          <h3>Reads one page, on click</h3>
+          <p>BidScreen uses the activeTab permission: it reads only the tender page you're viewing, only when you click Screen. No browsing history, no background access.</p>
+        </div>
+        <div class="card">
+          <h3>One external call</h3>
+          <p>The tender text goes directly from your browser to the Google Gemini API for analysis — exactly as if you'd pasted it into Google AI Studio yourself. <a href="privacy-policy.html">Full privacy policy</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap footer-row">
+      <div>BidScreen — AI tender screening · bidscreen.co.uk</div>
+      <nav class="footer-links">
+        <a href="https://chromewebstore.google.com/detail/bidscreen/dobkignaeniakjdenpodjinbmjclcapj">Chrome Web Store</a>
+        <a href="setup-guide.html">Setup guide</a>
+        <a href="privacy-policy.html">Privacy policy</a>
+        <a href="https://ko-fi.com/bidscreen">Support us on Ko-fi</a>
+        <a href="mailto:hello@bidscreen.co.uk">Contact</a>
+      </nav>
+    </div>
+  </footer>
+
 </body>
 </html>
