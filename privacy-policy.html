@@ -68,10 +68,10 @@
     </div>
 
     <h1>Privacy Policy</h1>
-    <p class="subtitle">bidscreen.co.uk &mdash; Last updated May 2026</p>
+    <p class="subtitle">bidscreen.co.uk &mdash; Last updated October 2026</p>
 
     <div class="callout">
-      <strong>Short version:</strong> BidScreen stores your API key and business profile locally on your device only. The only external call it makes is to the Google Gemini API to analyse tender text. Nothing else leaves your browser.
+      <strong>Short version:</strong> BidScreen stores your API key and business profile locally on your device only. The only external call it makes is to the Google Gemini API to analyse the tender text and any tender documents you choose to attach. Nothing else leaves your browser.
     </div>
 
     <h2>What data BidScreen collects</h2>
@@ -80,10 +80,10 @@
       <li><strong>Gemini API key</strong> — the API key you provide to connect to Google&rsquo;s Gemini AI service</li>
       <li><strong>Business profile</strong> — your business name, core services, insurance levels, turnover range, certifications, and geographic reach, entered voluntarily in the settings page</li>
     </ul>
-    <p>BidScreen also temporarily reads the text content of the active browser tab (the tender page) in order to analyse it. This content is not stored after the analysis completes.</p>
+    <p>BidScreen also temporarily reads the text content of the active browser tab (the tender page), and any PDF tender documents you choose to attach, in order to analyse them. The page text and documents are not stored after the analysis completes. The screening result itself is saved locally on your device, against the tender page address, so it reappears when you reopen BidScreen on that page.</p>
 
     <h2>Where your data is stored</h2>
-    <p>Your API key and business profile are stored exclusively in <code>chrome.storage.local</code> — Chrome&rsquo;s secure, device-local storage. This data:</p>
+    <p>Your API key, business profile and saved screening results are stored exclusively in <code>chrome.storage.local</code> — Chrome&rsquo;s secure, device-local storage. This data:</p>
     <ul>
       <li>Never leaves your device</li>
       <li>Is never transmitted to BidScreen&rsquo;s servers</li>
@@ -94,7 +94,8 @@
     <h2>What is sent to third parties</h2>
     <p>When you run a screen, BidScreen sends the following directly from your browser to the <strong>Google Gemini API</strong>:</p>
     <ul>
-      <li>The text content of the tender page you are viewing (truncated to 15,000 characters)</li>
+      <li>The text content of the tender page you are viewing (up to 100,000 characters)</li>
+      <li>Any PDF tender documents you choose to attach (for example the ITT, specification or SQ)</li>
       <li>Your business profile (to enable personalised matching)</li>
       <li>Your Gemini API key (as the authentication credential for the API call)</li>
     </ul>
@@ -116,7 +117,7 @@
     <h2>Contact</h2>
     <p>Questions about this privacy policy? Contact us at <a href="mailto:hello@bidscreen.co.uk">hello@bidscreen.co.uk</a>.</p>
 
-    <p class="updated">BidScreen &mdash; bidscreen.co.uk &mdash; Privacy Policy &mdash; May 2026</p>
+    <p class="updated">BidScreen &mdash; bidscreen.co.uk &mdash; Privacy Policy &mdash; October 2026</p>
 
   </div>
 </body>
